@@ -21,7 +21,9 @@ public class JavaBigDecimal {
         }
         sc.close();
         List<String> collect = new ArrayList<>();
-         Arrays.stream(s).filter(str -> str != null).sorted((s1, s2) -> new BigDecimal(s2).compareTo(new BigDecimal(s1)))
+         Arrays.stream(s)
+                 .filter(str -> str != null)
+                 .sorted((s1, s2) -> new BigDecimal(s2).compareTo(new BigDecimal(s1)))
                 .forEach(val -> collect.add(val));
         for(int i=0;i<collect.size();i++) {
             s[i]=collect.get(i);
