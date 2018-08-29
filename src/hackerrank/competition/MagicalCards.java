@@ -25,7 +25,34 @@ public class MagicalCards {
             inputs.add(n);
         }
 
-      //  inputs.stream().map(input -> getFactors(input)).map(list ->  )
+        inputs.stream().map(input -> getFactors(input)).forEach(list -> {
+            List<List<Integer>> allPermutations = new ArrayList<>();
+            findAllPermutations(new ArrayList<Integer>(), list, allPermutations);
+            System.out.println(allPermutations.size());
+        }  );
+    }
+
+    private static void findAllPermutations(ArrayList<Integer> listToStoreApermutation,
+                                            List<Integer> givenArr,
+                                            List<List<Integer>> allPermutations) {
+
+        int n = givenArr.size();
+        if (n == 0) {
+            allPermutations.add(listToStoreApermutation);
+
+        } else {
+            for (int i = 0; i < n; i++) {
+                //Because of this referencing ....you have to create new arrays before every recursive call
+                List<Integer> newGivenArray = new ArrayList<>();
+                newGivenArray.addAll(givenArr.subList(0, i));
+                newGivenArray.addAll(givenArr.subList(i + 1, n));
+                ArrayList<Integer> newListToStorePermutation = new ArrayList<>();
+                newListToStorePermutation.addAll(listToStoreApermutation);
+                newListToStorePermutation.add(givenArr.get(i));
+                findAllPermutations(newListToStorePermutation, newGivenArray, allPermutations);
+            }
+        }
+
     }
 
     private static List<Integer> getFactors(int num) {

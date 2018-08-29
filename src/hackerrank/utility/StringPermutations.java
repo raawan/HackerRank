@@ -4,16 +4,17 @@ import java.util.Arrays;
 import java.util.Set;
 import java.util.TreeSet;
 
-public class Permutations {
+public class StringPermutations {
+    static int i = 0;
 
     public static void main(String[] args) {
-        int[] arr = {1, 2, 3, 4};
+        int[] arr = {1, 2, 3,4};
         StringBuffer strBuf = new StringBuffer();
         Arrays.stream(arr).forEach(val -> strBuf.append(val));
 
         Set<String> result = new TreeSet<>();
         findAllPermutations("", strBuf.toString(), result);
-        result.stream().forEach(val -> System.out.println(val));
+        result.stream().forEach(val -> System.out.println(++i + "-------->" + val));
     }
 
     private static void findAllPermutations(String prefix, String given, Set<String> result) {
