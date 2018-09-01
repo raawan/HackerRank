@@ -5,26 +5,42 @@ import java.util.List;
 
 public class PrimeFactors {
 
-    public static void main(String[] args) {
-        List<Integer> allPrimes = sieveOfEratosthenes(100000);
-       // allPrimes.stream().forEach(val -> System.out.print(val+","));
+    private static List<Integer> allPrimes;
+
+    static {
+        long start = System.currentTimeMillis();
+        allPrimes = sieveOfEratosthenes(1000000);
+        //allPrimes.stream().forEach(val -> System.out.print(val+","));
+        long end = System.currentTimeMillis();
         System.out.println();
-        List<Integer> factors = getFactors(843569, allPrimes);
-        factors.stream().forEach(val -> System.out.println(val));
+        System.out.println("TIME FOR SofE:" + (end - start));
     }
 
-    private static List<Integer> getFactors(int num, List<Integer> allPrimes) {
+    public static void main(String[] args) {
+        System.out.println();
+        int[] inputs = {6,10,12,20,30,32,33,50,5555,1234,843569};
+        for(int input:inputs) {
+            System.out.println("Factors for:"+input);
+            getFactors(input).stream().forEach(val -> System.out.println(val));
+        }
+    }
+
+    private static List<Integer> getFactors(int num) {
         List<Integer> result = new ArrayList<>();
+        int original = num;
         for (int i = 0; i < allPrimes.size(); i++) {
             int p = allPrimes.get(i);
-            if (p  == num) {
-                result.add(p);
+            System.out.print(p+" ");
+            if (p * p > num) {
+                long prod =1;
+                for(int val: result) {
+                    prod*=val;
+                }
+                if(prod<original) {
+                    result.add(num);
+                }
                 break;
             }
-            if(p>num) {
-                break;
-            }
-
             if (num % p == 0) {
                 while (num % p == 0) {
                     num /= p;
@@ -32,6 +48,7 @@ public class PrimeFactors {
                 }
             }
         }
+        System.out.println();
         return result;
     }
 
