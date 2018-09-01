@@ -2,12 +2,14 @@ package hackerrank.utility;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
+import java.util.TreeSet;
 
 public class IntArrayPermutations {
     static int i = 0;
 
     public static void main(String[] args) {
-        int[] arr = {2, 2, 3};
+        int[] arr = {1, 2, 3};
         findAllPermutations(arr);
     }
 
@@ -16,23 +18,20 @@ public class IntArrayPermutations {
         for (int i = 0; i < arr.length; i++) {
             givenArray.add(arr[i]);
         }
-        int intialCapacity = (int) Math.pow(2, arr.length);
-        List<List<Integer>> result = new ArrayList<>(intialCapacity);
-        findAllPermutations(new ArrayList<Integer>(), givenArray, result);
-        result.stream().forEach(list -> {
-            System.out.println();
-            System.out.print(++i + "------->");
-            list.stream().forEach(val -> System.out.print(val + ","));
+        Set<String> result = new TreeSet<>();
+        findAllPermutations("", givenArray, result);
+        result.stream().forEach(val -> {
+            System.out.println(++i + "------->" + val);
         });
     }
 
-    private static void findAllPermutations(ArrayList<Integer> listToStoreApermutation,
+    private static void findAllPermutations(String prefix,
                                             List<Integer> givenArr,
-                                            List<List<Integer>> allPermutations) {
+                                            Set<String> allPermutations) {
 
         int n = givenArr.size();
         if (n == 0) {
-            allPermutations.add(listToStoreApermutation);
+            allPermutations.add(prefix.substring(0, prefix.length() - 1));
 
         } else {
             for (int i = 0; i < n; i++) {
@@ -40,12 +39,8 @@ public class IntArrayPermutations {
                 List<Integer> newGivenArray = new ArrayList<>();
                 newGivenArray.addAll(givenArr.subList(0, i));
                 newGivenArray.addAll(givenArr.subList(i + 1, n));
-                ArrayList<Integer> newListToStorePermutation = new ArrayList<>();
-                newListToStorePermutation.addAll(listToStoreApermutation);
-                newListToStorePermutation.add(givenArr.get(i));
-                findAllPermutations(newListToStorePermutation, newGivenArray, allPermutations);
+                findAllPermutations(prefix + givenArr.get(i) + ",", newGivenArray, allPermutations);
             }
         }
-
     }
 }

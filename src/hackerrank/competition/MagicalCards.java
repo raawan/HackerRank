@@ -1,8 +1,6 @@
 package hackerrank.competition;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Scanner;
+import java.util.*;
 
 public class MagicalCards {
 
@@ -25,20 +23,20 @@ public class MagicalCards {
             inputs.add(n);
         }
 
-        inputs.stream().map(input -> getFactors(input)).forEach(list -> {
-            List<List<Integer>> allPermutations = new ArrayList<>();
-            findAllPermutations(new ArrayList<Integer>(), list, allPermutations);
-            System.out.println(allPermutations.size());
+        inputs.stream().map(input -> getFactors(input)).parallel().forEach(list -> {
+            Set<String> result = new TreeSet<>();
+            findAllPermutations("", list, result);
+            System.out.println(result.size());
         }  );
     }
 
-    private static void findAllPermutations(ArrayList<Integer> listToStoreApermutation,
+    private static void findAllPermutations(String prefix,
                                             List<Integer> givenArr,
-                                            List<List<Integer>> allPermutations) {
+                                            Set<String> allPermutations) {
 
         int n = givenArr.size();
         if (n == 0) {
-            allPermutations.add(listToStoreApermutation);
+            allPermutations.add(prefix.substring(0, prefix.length() - 1));
 
         } else {
             for (int i = 0; i < n; i++) {
@@ -46,13 +44,9 @@ public class MagicalCards {
                 List<Integer> newGivenArray = new ArrayList<>();
                 newGivenArray.addAll(givenArr.subList(0, i));
                 newGivenArray.addAll(givenArr.subList(i + 1, n));
-                ArrayList<Integer> newListToStorePermutation = new ArrayList<>();
-                newListToStorePermutation.addAll(listToStoreApermutation);
-                newListToStorePermutation.add(givenArr.get(i));
-                findAllPermutations(newListToStorePermutation, newGivenArray, allPermutations);
+                findAllPermutations(prefix + givenArr.get(i) + ",", newGivenArray, allPermutations);
             }
         }
-
     }
 
     private static List<Integer> getFactors(int num) {
